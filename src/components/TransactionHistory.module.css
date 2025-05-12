@@ -1,0 +1,28 @@
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+  border-collapse: collapse;
+}
+.header {
+  background-color: rgb(40, 39, 39);
+}
+.headerRowEl {
+  padding: 12px 40px;
+  color: white;
+  border: 1px solid black;
+}
+.row:nth-child(even) {
+  background-color: #c4c1c1;
+}
+.rowEl {
+  padding: 12px 40px;
+  border: 1px solid black;
+}
+.rowEl.text {
+  text-transform: capitalize;
+}
