@@ -7,6 +7,7 @@ import { fetchImages } from '../img-api';
 import ImageGallery from './ImageGallery';
 import ErrorMessage from './ErrorMessage';
 import LoadMoreBtn from './LoadMoreBtn';
+import ImageModal from './ImageModal';
 
 import clsx from 'clsx';
 import css from './App.module.css';
@@ -20,6 +21,9 @@ const [images, setImages] = useState([]);
   const [query, setQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = (newQuery) => {
     setQuery(newQuery);
@@ -57,13 +61,23 @@ const incrementPage = () => {
   const isLastPage = currentPage === totalPages - 1;
   const hasImages = images.length > 0;
 
+const openModal = (image) => {
+  setSelectedImage(image);
+  setIsModalOpen(true);
+};
+
+const closeModal = () => {
+  setIsModalOpen(false);
+  setSelectedImage(null);
+};
+
   return (
     <div className={clsx(css.container)}> <SearchBar onSearch={handleSearch}/>
       <Toaster position="top-right" />
       {isError ? <ErrorMessage/> :
-        <ImageGallery images={images} />}
+        <ImageGallery images={images} onImageClick={openModal} />}
       {isLoading && (
-        <div className="loader-wrapper">
+        <div className={clsx(css.wrapper)}>
           <BounceLoader
             color="#ff6200"
             size={60}
@@ -72,6 +86,9 @@ const incrementPage = () => {
           />
         </div>
       )}
+      {isModalOpen && <ImageModal isOpen={isModalOpen}
+  onRequestClose={closeModal}
+  image={selectedImage}/>}
       {hasImages && !isLoading && !isLastPage && (<LoadMoreBtn onClick={incrementPage}/>)}
     </div>
   )
